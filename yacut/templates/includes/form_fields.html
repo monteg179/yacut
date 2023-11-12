@@ -1,0 +1,21 @@
+{% for field in form if field.flags.hidden %}
+  {{ field }}
+{% endfor %}
+
+{% for field in form if not field.flags.hidden %}
+    {% if field.label %}
+      {{ field.label }}
+    {% endif %}
+    {% if field.description %}
+      {{ field(class='form-control form-control-lg py-2 mb-3', placeholder=field.description) }}
+    {% else %}
+      {{ field(class='form-control form-control-lg py-2 mb-3') }}
+    {% endif %}
+    <p>
+    {% if field.errors %}
+      {% for error in field.errors %}
+        <span style='color: red'>{{ error }}</span>
+      {% endfor %}
+    {% endif %}
+    </p>
+{% endfor %}
