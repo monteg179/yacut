@@ -6,32 +6,33 @@ from wtforms.validators import (
     Length,
     Regexp,
 )
+
 from yacut.models import URLMap
 
 
 class URLMapForm(FlaskForm):
 
     original_link = StringField(
-        label="Адрес URL",
+        label='Адрес URL',
         description='Длинная ссылка',
         validators=(
-            DataRequired(message="Обязательное поле."),
-            URL(message="Некорректный адрес URL."),
+            DataRequired(message='Обязательное поле.'),
+            URL(message='Некорректный адрес URL.'),
         ),
     )
     custom_id = StringField(
-        label="Идентификатор ссылки",
+        label='Идентификатор ссылки',
         description='Ваш вариант короткой ссылки',
         validators=(
             Length(
                 max=URLMap.SHORT_MAX_LENGTH,
-                message="Длина поля не должна превышать 16 символов.",
+                message='Длина поля не должна превышать 16 символов.',
             ),
             Regexp(
                 regex=URLMap.SHORT_REGEX,
                 message=(
-                    "Идентификатор может состоять только "
-                    "из латинских букв и цифр."
+                    'Идентификатор может состоять только '
+                    'из латинских букв и цифр.'
                 ),
             ),
         ),

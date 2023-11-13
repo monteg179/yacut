@@ -1,5 +1,6 @@
-import re
 from http import HTTPStatus
+import re
+
 
 from flask import (
     jsonify,
@@ -18,16 +19,15 @@ def create_short_url() -> tuple[Response, int]:
     instance = validation(request.json)
     db.session.add(instance)
     db.session.commit()
-    url = url_for("mapping_redirect", short=instance.short, _external=True)
+    url = url_for('mapping_redirect', short=instance.short, _external=True)
     response = {
-        "url": instance.original,
-        "short_link": url,
+        'url': instance.original,
+        'short_link': url,
     }
     return jsonify(response), HTTPStatus.CREATED.value
 
 
 def validation(data) -> URLMap:
-    print(f'data: {type(data)} = {data}')
     if not data:
         raise APIRequestError('Отсутствует тело запроса')
     url = data.get('url')
@@ -44,9 +44,9 @@ def validation(data) -> URLMap:
     return URLMap(original=url, short=custom_id)
 
 
-@app.route("/api/id/<string:short>/")
+@app.route('/api/id/<string:short>/')
 def get_short_url(short: str) -> tuple[Response, int]:
     instance = URLMap.query.filter_by(short=short).first()
     if not instance:
         raise APIRequestError('Указанный id не найден', HTTPStatus.NOT_FOUND)
-    return jsonify({"url": instance.original}), HTTPStatus.OK.value
+    return jsonify({'url': instance.original}), HTTPStatus.OK.value
